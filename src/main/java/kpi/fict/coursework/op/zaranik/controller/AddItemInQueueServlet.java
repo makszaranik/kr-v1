@@ -64,12 +64,13 @@ public class AddItemInQueueServlet extends HttpServlet {
         request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
         return;
       }
-      if(selectedQueue.getItems().contains(newItem)){
+      if(queueDaoService.contains(selectedQueue, newItem)){
         request.setAttribute("errorMessage", "Item is already exists");
         request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
         return;
       }
-      selectedQueue.addItem(newItem.trim());
+
+      queueDaoService.addItemInQueue(selectedQueue, newItem.trim());
       request.getRequestDispatcher("/MainPage.jsp").forward(request, response);
     }
   }

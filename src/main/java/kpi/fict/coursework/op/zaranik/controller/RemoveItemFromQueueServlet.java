@@ -66,12 +66,12 @@ public class RemoveItemFromQueueServlet extends HttpServlet {
           request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
           return;
         }
-        if(selectedQueue.getQueueSize() == 0){
+        if(queueDaoService.getQueueSize(selectedQueue) == 0){
           request.setAttribute("errorMessage", "Queue is empty");
           request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
           return;
         }
-        selectedQueue.removeItem(itemToRemove.trim());
+        queueDaoService.removeItemFromQueue(selectedQueue, itemToRemove.trim());
         request.getRequestDispatcher("/MainPage.jsp").forward(request, response);
       }
     }else{

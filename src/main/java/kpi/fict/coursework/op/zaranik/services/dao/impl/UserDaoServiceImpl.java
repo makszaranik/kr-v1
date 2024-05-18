@@ -32,17 +32,10 @@ public class UserDaoServiceImpl implements UserDaoService {
   }
 
 
-  @Override
-  public void deleteUser(String username) {
-    User user = findUserByUsername(username);
-    if(user != null){
-      userDao.delete(user);
-    }
-  }
-
 
   @Override
   public boolean exists(String username) {
     return findUserByUsername(username) != null;
   }
+
 }

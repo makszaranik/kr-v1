@@ -51,7 +51,7 @@
     <p>Created by: ${selectedQueue.creator.username}</p>
     <p>Your position in the queue: ${userPosition}</p>
     <ul>
-        <c:forEach var="item" items="${selectedQueue.items}">
+        <c:forEach var="item" items="${items}">
             <li>${item}</li>
         </c:forEach>
     </ul>

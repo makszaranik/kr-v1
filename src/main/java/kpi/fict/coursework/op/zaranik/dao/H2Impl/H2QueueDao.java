@@ -8,6 +8,7 @@ import kpi.fict.coursework.op.zaranik.dao.QueueDao;
 import kpi.fict.coursework.op.zaranik.dao.UserDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
+import lombok.SneakyThrows;
 
 public class H2QueueDao extends H2AbstractDao<Queue> implements QueueDao {
 
@@ -26,11 +27,12 @@ public class H2QueueDao extends H2AbstractDao<Queue> implements QueueDao {
     User creator = userDao.get(creatorId);
     Queue queue = new Queue(name, creator);
     queue.setId(id);
-    queue.getItems().addAll(getItemsByQueueId(id));
     return queue;
   }
 
-  private List<String> getItemsByQueueId(int queueId) throws SQLException {
+  @Override
+  @SneakyThrows
+  public List<String> getItemsByQueueId(int queueId) {
     List<String> items = new ArrayList<>();
     String query = "SELECT item FROM queueItems WHERE queueId = ?";
     try (Connection connection = H2DataSource.getConnection();
@@ -44,6 +46,31 @@ public class H2QueueDao extends H2AbstractDao<Queue> implements QueueDao {
     }
     return items;
   }
+  @Override
+  @SneakyThrows
+  public void addItemByQueueId(int queueId, String item) {
+    String query = "INSERT INTO queueItems (queueId, item) VALUES (?, ?)";
+    try (Connection connection = H2DataSource.getConnection();
+        PreparedStatement ps = connection.prepareStatement(query)) {
+      ps.setInt(1, queueId);
+      ps.setString(2, item);
+      ps.executeUpdate();
+    }
+  }
+
+  @Override
+  @SneakyThrows
+  public void removeItemFromQueue(int queueId, String item) {
+    String query = "DELETE FROM queueItems WHERE queueId = ? AND item = ? LIMIT 1";
+    try (Connection connection = H2DataSource.getConnection();
+        PreparedStatement ps = connection.prepareStatement(query)) {
+      ps.setInt(1, queueId);
+      ps.setString(2, item);
+      ps.executeUpdate();
+    }
+  }
+
+
 
   @Override
   protected String getTableName() {
@@ -58,7 +85,7 @@ public class H2QueueDao extends H2AbstractDao<Queue> implements QueueDao {
   @Override
   protected void setInsertParameters(PreparedStatement ps, Queue entity) throws SQLException {
     ps.setString(1, entity.getName());
-    ps.setInt(2, entity.getCreator().getUserId());
+    ps.setInt(2, entity.getCreator().getId());
   }
 
   @Override
@@ -69,9 +96,10 @@ public class H2QueueDao extends H2AbstractDao<Queue> implements QueueDao {
   @Override
   protected void setUpdateParameters(PreparedStatement ps, Queue entity) throws SQLException {
     ps.setString(1, entity.getName());
-    ps.setInt(2, entity.getCreator().getUserId());
+    ps.setInt(2, entity.getCreator().getId());
     ps.setInt(3, entity.getId());
   }
+
 
   @Override
   protected Integer getId(Queue entity) {

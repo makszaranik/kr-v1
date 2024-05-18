@@ -10,22 +10,22 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS queues (
-                                      id INT AUTO_INCREMENT PRIMARY KEY,
-                                      name VARCHAR(255) NOT NULL,
-                                      creatorId INT NOT NULL,
-                                      FOREIGN KEY (creatorId) REFERENCES users(id)
+                                     id INT AUTO_INCREMENT PRIMARY KEY,
+                                     name VARCHAR(255) NOT NULL,
+                                     creatorId INT NOT NULL,
+                                     FOREIGN KEY (creatorId) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS queueItems (
-                                          id INT AUTO_INCREMENT PRIMARY KEY,
-                                          queueId INT NOT NULL,
-                                          item VARCHAR(255) NOT NULL,
-                                          FOREIGN KEY (queueId) REFERENCES queues(id)
+                                     id INT AUTO_INCREMENT PRIMARY KEY,
+                                     queueId INT NOT NULL,
+                                     item VARCHAR(255) NOT NULL,
+                                     FOREIGN KEY (queueId) REFERENCES queues(id)
 );
 
 INSERT INTO users (username, password, roleType) VALUES ('Max', 'max123', 'USER');
 INSERT INTO users (username, password, roleType) VALUES ('Yana', 'yana123', 'USER');
-INSERT INTO users (username, password, roleType) VALUES ('admin', 'admin', 'OWNER');
+INSERT INTO users (username, password, roleType) VALUES ('admin', 'admin', 'USER');
 
 INSERT INTO queues (name, creatorId) VALUES ('IT Support', 1);
 INSERT INTO queues (name, creatorId) VALUES ('HR Services', 3);

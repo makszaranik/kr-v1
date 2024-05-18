@@ -55,6 +55,7 @@ public class ViewSelectedQueueServlet extends HttpServlet {
 
     request.setAttribute("selectedQueue", selectedQueue);
     request.setAttribute("userPosition", userPosition);
+    request.setAttribute("items", queueDaoService.getItemsByQueueId(selectedQueue.getId()));
     request.getRequestDispatcher("QueueContent.jsp").forward(request, response);
   }
 }

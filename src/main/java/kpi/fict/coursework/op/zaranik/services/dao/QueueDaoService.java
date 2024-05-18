@@ -2,6 +2,7 @@ package kpi.fict.coursework.op.zaranik.services.dao;
 
 
 import java.util.Collection;
+import java.util.List;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 
@@ -14,4 +15,10 @@ public interface QueueDaoService {
   void updateQueue(Queue queue);
   void delete(Queue queue);
   boolean exists(Queue queue);
+  void removeFirstItemFromQueue(Queue queue);
+  Collection<String> getItemsByQueueId(int queueId);
+  int getQueueSize(Queue queue);
+  boolean contains(Queue queue, String item);
+  void addItemInQueue(Queue queue, String Item);
+  void removeItemFromQueue(Queue queue, String Item);
 }

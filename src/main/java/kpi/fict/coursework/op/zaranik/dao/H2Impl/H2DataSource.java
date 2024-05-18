@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+//HikaryCP сделать
 public class H2DataSource {
   private static final String JDBC_URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
   private static final String INIT_SQL = "RUNSCRIPT FROM 'classpath:database.sql'";

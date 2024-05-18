@@ -4,10 +4,12 @@ package kpi.fict.coursework.op.zaranik.services.dao.impl;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import kpi.fict.coursework.op.zaranik.dao.H2Impl.H2QueueDao;
 import kpi.fict.coursework.op.zaranik.dao.QueueDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.QueueDaoService;
+import lombok.SneakyThrows;
 
 public class QueueDaoServiceImpl implements QueueDaoService {
 
@@ -24,7 +26,6 @@ public class QueueDaoServiceImpl implements QueueDaoService {
         .findFirst().orElse(null);
   }
 
-
   @Override
   public void addQueueToUser(User user, Queue queue) {
     if (user != null && queue != null) {
@@ -35,39 +36,83 @@ public class QueueDaoServiceImpl implements QueueDaoService {
 
   @Override
   public Collection<Queue> getUserQueues(String username) {
-     List<Queue> result =  queueDao.findAll().stream()
-         .filter(queue -> queue.getCreator().getUsername().equals(username))
-         .collect(Collectors.toList());
-     return result;
+    return queueDao.findAll().stream()
+        .filter(queue -> queue.getCreator().getUsername().equals(username))
+        .collect(Collectors.toList());
   }
 
   @Override
   public Collection<Queue> getAllQueues() {
-      return queueDao.findAll();
+    return queueDao.findAll();
   }
 
   @Override
+  @SneakyThrows
   public int getUserPosition(Queue queue, User user) {
-    Queue selectedQueue = queueDao.findAll().stream().
-        filter(queue1 -> queue1.getName().equals(queue.getName())).
-        findFirst().
-        orElse(null);
-
-    if(selectedQueue == null) return -1;
-    List<String> items = selectedQueue.getItems();
-    if(!items.contains(user.getUsername())) return -1;
+    Queue selectedQueue = queueDao.findAll().stream()
+        .filter(q -> q.getName().equals(queue.getName()))
+        .findFirst().orElse(null);
+    if (selectedQueue == null) return -1;
+    List<String> items = ((H2QueueDao) queueDao).getItemsByQueueId(selectedQueue.getId());
+    if (!items.contains(user.getUsername())) return -1;
     return items.indexOf(user.getUsername()) + 1;
   }
 
   @Override
   public void updateQueue(Queue queue) {
-      queueDao.update(queue);
+    queueDao.update(queue);
   }
 
   @Override
   public void delete(Queue queue) {
-      queueDao.delete(queue);
+    queueDao.delete(queue);
   }
+
   @Override
-  public boolean exists(Queue queue){return findQueueByName(queue.getName()) != null;}
+  public boolean exists(Queue queue) {
+    return findQueueByName(queue.getName()) != null;
+  }
+
+  @Override
+  @SneakyThrows
+  public void removeFirstItemFromQueue(Queue queue) {
+    List<String> items = ((H2QueueDao) queueDao).getItemsByQueueId(queue.getId());
+    if (!items.isEmpty()) {
+      String firstItem = items.get(0);
+      (queueDao).removeItemFromQueue(queue.getId(), firstItem);
+    }
+  }
+
+
+  @Override
+  public List<String> getItemsByQueueId(int queueId) {
+    return ((H2QueueDao) queueDao).getItemsByQueueId(queueId);
+  }
+
+  @Override
+  public void addItemInQueue(Queue queue, String item) {
+    int queueId = queue.getId();
+    queueDao.addItemByQueueId(queueId, item);
+  }
+
+  @Override
+  public void removeItemFromQueue(Queue queue, String item) {
+    int queueId = queue.getId();
+    queueDao.removeItemFromQueue(queueId, item);
+  }
+
+  @Override
+  @SneakyThrows
+  public int getQueueSize(Queue queue) {
+    return queueDao.getItemsByQueueId(queue.getId()).size();
+  }
+
+  @Override
+  @SneakyThrows
+  public boolean contains(Queue queue, String item) {
+    List<String> items = (List<String>) queueDao.getItemsByQueueId(queue.getId());
+    return items.contains(item);
+  }
+
 }
+

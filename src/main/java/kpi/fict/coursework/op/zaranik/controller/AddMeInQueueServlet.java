@@ -69,13 +69,13 @@ public class AddMeInQueueServlet extends HttpServlet {
         return;
       }
 
-      if(selectedQueue.getItems().contains(newItem)){
+      if(queueDaoService.contains(selectedQueue, newItem)){
         request.setAttribute("errorMessage", "You is already exist");
         request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
         return;
       }
 
-      selectedQueue.addItem(newItem.trim());
+      queueDaoService.addItemInQueue(selectedQueue, newItem.trim());
       request.getRequestDispatcher("/MainPage.jsp").forward(request, response);
     }
 

@@ -67,10 +67,10 @@ public class UpdateQueueServlet extends HttpServlet {
         request.getRequestDispatcher("/addItemInQueue").forward(request, response);
         break;
       case "removeItem":
-        request.getRequestDispatcher("/RemoveFromQueue").forward(request, response);
+        request.getRequestDispatcher("/removeItemFromQueue").forward(request, response);
         break;
       case "removeFirstItem":
-        request.getRequestDispatcher("/RemoveFromBegin").forward(request, response);
+        request.getRequestDispatcher("/removeItemFromBegin").forward(request, response);
         break;
       case "blockOrUnblockQueue":
         request.getRequestDispatcher("/blockUnblockQueue").forward(request, response);
