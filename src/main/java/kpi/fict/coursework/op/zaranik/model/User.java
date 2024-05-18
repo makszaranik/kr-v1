@@ -2,7 +2,6 @@ package kpi.fict.coursework.op.zaranik.model;
 
 
 import java.util.Objects;
-import kpi.fict.coursework.op.zaranik.model.Role.RoleType;
 import lombok.Getter;
 
 @Getter
@@ -11,10 +10,10 @@ public class User {
   private String password;
   private int id;
   private String passwordHash;
-  private Role.RoleType roleType;
+  private RoleType roleType;
 
 
-  public User(Integer userId, String username, String password, Role.RoleType roleType) {
+  public User(Integer userId, String username, String password, RoleType roleType) {
     this.id = userId;
     this.username = username;
     this.password = password;
@@ -22,7 +21,7 @@ public class User {
     this.roleType = roleType;
   }
 
-  public User(String username, String password, Role.RoleType roleType) {
+  public User(String username, String password, RoleType roleType) {
     this.username = username;
     this.password = password;
     this.roleType = roleType;

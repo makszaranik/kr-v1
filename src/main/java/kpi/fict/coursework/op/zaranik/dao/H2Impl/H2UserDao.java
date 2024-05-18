@@ -4,7 +4,7 @@ package kpi.fict.coursework.op.zaranik.dao.H2Impl;
 import java.sql.*;
 import java.util.Collection;
 import kpi.fict.coursework.op.zaranik.dao.UserDao;
-import kpi.fict.coursework.op.zaranik.model.Role.RoleType;
+import kpi.fict.coursework.op.zaranik.model.RoleType;
 import kpi.fict.coursework.op.zaranik.model.User;
 
 public class H2UserDao extends H2Dao<User> implements UserDao {

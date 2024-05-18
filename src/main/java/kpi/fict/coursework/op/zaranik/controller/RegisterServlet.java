@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import kpi.fict.coursework.op.zaranik.model.Role.RoleType;
+import kpi.fict.coursework.op.zaranik.model.RoleType;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.UserDaoService;
 import kpi.fict.coursework.op.zaranik.services.factories.ServiceFactory;
@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     if (userDaoService.exists(username)) {
-      response.sendRedirect("UserExists.jsp");
+      request.getRequestDispatcher("/UserAlreadyExists.jsp").forward(request, response);
       return;
     }
 

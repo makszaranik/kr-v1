@@ -2,7 +2,7 @@ package kpi.fict.coursework.op.zaranik.services.roleconfigurator.impl;
 
 
 import kpi.fict.coursework.op.zaranik.model.Queue;
-import kpi.fict.coursework.op.zaranik.model.Role.RoleType;
+import kpi.fict.coursework.op.zaranik.model.RoleType;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.QueueDaoService;
 import kpi.fict.coursework.op.zaranik.services.factories.ServiceFactory;

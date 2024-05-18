@@ -37,7 +37,6 @@ public class LoginServlet extends HttpServlet {
     User user = userDaoService.findUserByUsername(username);
 
     if(user == null){
-      System.out.println("user is null");
       request.getRequestDispatcher("InvalidLoginOrPassword.jsp").forward(request, response);
       return;
     }
