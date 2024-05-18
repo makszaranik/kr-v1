@@ -33,7 +33,7 @@ public class H2DataSource {
     }
   }
 
-  public static synchronized Connection getConnection() {
+  public static Connection getConnection() {
     if (!initialized) {
       initializeDatabase();
       initialized = true;
