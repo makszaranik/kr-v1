@@ -10,7 +10,7 @@ import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 import lombok.SneakyThrows;
 
-public class H2QueueDao extends H2AbstractDao<Queue> implements QueueDao {
+public class H2QueueDao extends H2Dao<Queue> implements QueueDao {
 
   private UserDao userDao;
 

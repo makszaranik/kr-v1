@@ -7,7 +7,7 @@ import kpi.fict.coursework.op.zaranik.dao.UserDao;
 import kpi.fict.coursework.op.zaranik.model.Role.RoleType;
 import kpi.fict.coursework.op.zaranik.model.User;
 
-public class H2UserDao extends H2AbstractDao<User> implements UserDao {
+public class H2UserDao extends H2Dao<User> implements UserDao {
 
   public H2UserDao() {
     super();

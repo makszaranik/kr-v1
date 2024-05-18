@@ -6,7 +6,7 @@ import java.util.*;
 import kpi.fict.coursework.op.zaranik.dao.Dao;
 import lombok.SneakyThrows;
 
-public abstract class H2AbstractDao<T> implements Dao<T> {
+public abstract class H2Dao<T> implements Dao<T> {
 
   protected abstract T mapResultSetToEntity(ResultSet rs) throws SQLException;
 
