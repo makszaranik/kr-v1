@@ -38,7 +38,7 @@ public class RemoveItemFromQueueServlet extends HttpServlet {
         request.setAttribute("queues", userQueues);
       }
     }
-    request.getRequestDispatcher("/UpdateSelectedQueue.jsp").forward(request, response);
+    request.getRequestDispatcher("/UpdateQueue.jsp").forward(request, response);
   }
 
   @Override
