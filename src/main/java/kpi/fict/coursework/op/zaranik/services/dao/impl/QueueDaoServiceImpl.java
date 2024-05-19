@@ -4,7 +4,7 @@ package kpi.fict.coursework.op.zaranik.services.dao.impl;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import kpi.fict.coursework.op.zaranik.dao.H2Impl.H2QueueDao;
+import kpi.fict.coursework.op.zaranik.dao.H2.H2QueueDao;
 import kpi.fict.coursework.op.zaranik.dao.QueueDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;

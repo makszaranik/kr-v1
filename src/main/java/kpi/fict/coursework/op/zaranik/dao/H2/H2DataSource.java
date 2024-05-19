@@ -1,4 +1,4 @@
-package kpi.fict.coursework.op.zaranik.dao.H2Impl;
+package kpi.fict.coursework.op.zaranik.dao.H2;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

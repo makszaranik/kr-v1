@@ -4,8 +4,7 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import kpi.fict.coursework.op.zaranik.dao.DaoFactory;
-import kpi.fict.coursework.op.zaranik.dao.H2Impl.H2DataSource;
-import kpi.fict.coursework.op.zaranik.dao.H2Impl.H2Database;
+import kpi.fict.coursework.op.zaranik.dao.H2.H2Database;
 import kpi.fict.coursework.op.zaranik.services.factories.ServiceFactory;
 
 @WebListener
