@@ -4,14 +4,14 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import kpi.fict.coursework.op.zaranik.dao.DaoFactory;
-import kpi.fict.coursework.op.zaranik.dao.H2.H2Database;
+import kpi.fict.coursework.op.zaranik.dao.Postgres.Database;
 import kpi.fict.coursework.op.zaranik.services.factories.ServiceFactory;
 
 @WebListener
 public class ApplicationContextListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent sce) {
-    H2Database database = new H2Database();
+    Database database = new Database();
     DaoFactory daoFactory = database.getDaoFactory();
     sce.getServletContext().setAttribute("daoFactory", daoFactory);
     sce.getServletContext().setAttribute("database", database);

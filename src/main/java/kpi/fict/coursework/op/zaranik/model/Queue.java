@@ -19,7 +19,7 @@ public class Queue {
     return isBlocked;
   }
 
-  public void setBlocked(boolean blocked) {
+  public void setBlock(boolean blocked) {
     isBlocked = blocked;
   }
 

@@ -1,20 +1,19 @@
-package kpi.fict.coursework.op.zaranik.dao.H2;
+package kpi.fict.coursework.op.zaranik.dao.Postgres;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import kpi.fict.coursework.op.zaranik.dao.QueueDao;
 import kpi.fict.coursework.op.zaranik.dao.UserDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 import lombok.SneakyThrows;
 
-public class H2QueueDao extends H2Dao<Queue> implements QueueDao {
+public class QueueDao extends Dao<Queue> implements kpi.fict.coursework.op.zaranik.dao.QueueDao {
 
   private UserDao userDao;
 
-  public H2QueueDao(UserDao userDao) {
+  public QueueDao(UserDao userDao) {
     super();
     this.userDao = userDao;
   }
@@ -24,9 +23,11 @@ public class H2QueueDao extends H2Dao<Queue> implements QueueDao {
     int id = rs.getInt("id");
     String name = rs.getString("name");
     int creatorId = rs.getInt("creatorId");
+    boolean isBlocked = rs.getBoolean("isBlocked");
     User creator = userDao.get(creatorId);
     Queue queue = new Queue(name, creator);
     queue.setId(id);
+    queue.setBlock(isBlocked);
     return queue;
   }
 
@@ -35,7 +36,7 @@ public class H2QueueDao extends H2Dao<Queue> implements QueueDao {
   public List<String> getItemsByQueueId(int queueId) {
     List<String> items = new ArrayList<>();
     String query = "SELECT item FROM queueItems WHERE queueId = ?";
-    try (Connection connection = H2DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection();
         PreparedStatement ps = connection.prepareStatement(query)) {
       ps.setInt(1, queueId);
       try (ResultSet rs = ps.executeQuery()) {
@@ -46,11 +47,12 @@ public class H2QueueDao extends H2Dao<Queue> implements QueueDao {
     }
     return items;
   }
+
   @Override
   @SneakyThrows
   public void addItemByQueueId(int queueId, String item) {
     String query = "INSERT INTO queueItems (queueId, item) VALUES (?, ?)";
-    try (Connection connection = H2DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection();
         PreparedStatement ps = connection.prepareStatement(query)) {
       ps.setInt(1, queueId);
       ps.setString(2, item);
@@ -61,16 +63,15 @@ public class H2QueueDao extends H2Dao<Queue> implements QueueDao {
   @Override
   @SneakyThrows
   public void removeItemFromQueue(int queueId, String item) {
-    String query = "DELETE FROM queueItems WHERE queueId = ? AND item = ? LIMIT 1";
-    try (Connection connection = H2DataSource.getConnection();
+    String query = "DELETE FROM queueItems WHERE id IN (" +
+        "SELECT id FROM queueItems WHERE queueId = ? AND item = ? LIMIT 1)";
+    try (Connection connection = DataSource.getConnection();
         PreparedStatement ps = connection.prepareStatement(query)) {
       ps.setInt(1, queueId);
       ps.setString(2, item);
       ps.executeUpdate();
     }
   }
-
-
 
   @Override
   protected String getTableName() {
@@ -79,27 +80,28 @@ public class H2QueueDao extends H2Dao<Queue> implements QueueDao {
 
   @Override
   protected String getInsertQuery() {
-    return "INSERT INTO queues (name, creatorId) VALUES (?, ?)";
+    return "INSERT INTO queues (name, creatorId, isBlocked) VALUES (?, ?, ?)";
   }
 
   @Override
   protected void setInsertParameters(PreparedStatement ps, Queue entity) throws SQLException {
     ps.setString(1, entity.getName());
     ps.setInt(2, entity.getCreator().getId());
+    ps.setBoolean(3, entity.isBlocked());
   }
 
   @Override
   protected String getUpdateQuery() {
-    return "UPDATE queues SET name = ?, creatorId = ? WHERE id = ?";
+    return "UPDATE queues SET name = ?, creatorId = ?, isBlocked = ? WHERE id = ?";
   }
 
   @Override
   protected void setUpdateParameters(PreparedStatement ps, Queue entity) throws SQLException {
     ps.setString(1, entity.getName());
     ps.setInt(2, entity.getCreator().getId());
-    ps.setInt(3, entity.getId());
+    ps.setBoolean(3, entity.isBlocked());
+    ps.setInt(4, entity.getId());
   }
-
 
   @Override
   protected Integer getId(Queue entity) {
@@ -117,8 +119,8 @@ public class H2QueueDao extends H2Dao<Queue> implements QueueDao {
   }
 
   @Override
-  public void insert(Queue queue, boolean generateId) {
-    super.insert(queue, generateId);
+  public void insert(Queue queue) {
+    super.insert(queue);
   }
 
   @Override

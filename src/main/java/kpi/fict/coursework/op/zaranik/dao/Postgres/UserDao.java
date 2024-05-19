@@ -1,15 +1,14 @@
-package kpi.fict.coursework.op.zaranik.dao.H2;
+package kpi.fict.coursework.op.zaranik.dao.Postgres;
 
 
 import java.sql.*;
 import java.util.Collection;
-import kpi.fict.coursework.op.zaranik.dao.UserDao;
 import kpi.fict.coursework.op.zaranik.model.RoleType;
 import kpi.fict.coursework.op.zaranik.model.User;
 
-public class H2UserDao extends H2Dao<User> implements UserDao {
+public class UserDao extends Dao<User> implements kpi.fict.coursework.op.zaranik.dao.UserDao {
 
-  public H2UserDao() {
+  public UserDao() {
     super();
   }
 
@@ -68,8 +67,8 @@ public class H2UserDao extends H2Dao<User> implements UserDao {
   }
 
   @Override
-  public void insert(User user, boolean generateId) {
-    super.insert(user, generateId);
+  public void insert(User user) {
+    super.insert(user);
   }
 
   @Override

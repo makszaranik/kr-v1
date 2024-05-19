@@ -1,12 +1,11 @@
-package kpi.fict.coursework.op.zaranik.dao.H2;
+package kpi.fict.coursework.op.zaranik.dao.Postgres;
 
 
 import java.sql.*;
 import java.util.*;
-import kpi.fict.coursework.op.zaranik.dao.Dao;
 import lombok.SneakyThrows;
 
-public abstract class H2Dao<T> implements Dao<T> {
+public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T> {
 
   protected abstract T mapResultSetToEntity(ResultSet rs) throws SQLException;
 
@@ -28,7 +27,7 @@ public abstract class H2Dao<T> implements Dao<T> {
   @Override
   public T get(Integer id) {
     String query = "SELECT * FROM " + getTableName() + " WHERE id = ?";
-    try (Connection connection = H2DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection();
         PreparedStatement ps = connection.prepareStatement(query)) {
       ps.setInt(1, id);
       try (ResultSet rs = ps.executeQuery()) {
@@ -44,7 +43,7 @@ public abstract class H2Dao<T> implements Dao<T> {
   public Collection<T> findAll() {
     List<T> entities = new ArrayList<>();
     String query = "SELECT * FROM " + getTableName();
-    try (Connection connection = H2DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection();
         PreparedStatement ps = connection.prepareStatement(query);
         ResultSet rs = ps.executeQuery()) {
       while (rs.next()) {
@@ -58,17 +57,15 @@ public abstract class H2Dao<T> implements Dao<T> {
 
   @SneakyThrows
   @Override
-  public void insert(T entity, boolean generateId) {
+  public void insert(T entity) {
     String insertSql = getInsertQuery();
-    try (Connection connection = H2DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection();
         PreparedStatement ps = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
       setInsertParameters(ps, entity);
       ps.executeUpdate();
-      if (generateId) {
-        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-          if (generatedKeys.next()) {
-            setGeneratedId(entity, generatedKeys.getInt(1));
-          }
+      try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+        if (generatedKeys.next()) {
+          setGeneratedId(entity, generatedKeys.getInt(1));
         }
       }
     }
@@ -77,7 +74,7 @@ public abstract class H2Dao<T> implements Dao<T> {
   @Override
   public void delete(T entity) {
     String query = "DELETE FROM " + getTableName() + " WHERE id = ?";
-    try (Connection connection = H2DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection();
         PreparedStatement ps = connection.prepareStatement(query)) {
       ps.setInt(1, getId(entity));
       ps.executeUpdate();
@@ -89,7 +86,7 @@ public abstract class H2Dao<T> implements Dao<T> {
   @Override
   public void update(T entity) {
     String query = getUpdateQuery();
-    try (Connection connection = H2DataSource.getConnection();
+    try (Connection connection = DataSource.getConnection();
         PreparedStatement ps = connection.prepareStatement(query)) {
       setUpdateParameters(ps, entity);
       ps.executeUpdate();

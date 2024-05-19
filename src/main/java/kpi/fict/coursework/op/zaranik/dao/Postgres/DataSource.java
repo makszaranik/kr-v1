@@ -1,4 +1,4 @@
-package kpi.fict.coursework.op.zaranik.dao.H2;
+package kpi.fict.coursework.op.zaranik.dao.Postgres;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
 
-public class H2DataSource {
+public class DataSource {
   private static final String JDBC_URL = "jdbc:postgresql://localhost:5435/postgres";
   private static final String USER = "postgres";
   private static final String PASSWORD = "zaranik";

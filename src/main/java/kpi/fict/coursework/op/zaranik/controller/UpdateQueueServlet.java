@@ -29,7 +29,6 @@ public class UpdateQueueServlet extends HttpServlet {
     this.roleConfiguratorService = ServiceFactory.getRoleConfiguratorService();
   }
 
-
   @Override
   @SneakyThrows
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -44,7 +43,6 @@ public class UpdateQueueServlet extends HttpServlet {
     request.getRequestDispatcher("UpdateQueue.jsp").forward(request, response);
   }
 
-
   @Override
   @SneakyThrows
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -54,16 +52,26 @@ public class UpdateQueueServlet extends HttpServlet {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
+    if (selectedQueue == null) {
+      System.out.println("Selected queue does not exist: " + selectedQueueName);
+      request.setAttribute("errorMessage", "Selected queue does not exist");
+      request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+      return;
+    }
 
-    if(roleConfiguratorService.getConfiguration(user, selectedQueue) != RoleType.OWNER){
-      System.out.println(user.getRoleType());
+    if (roleConfiguratorService.getConfiguration(user, selectedQueue) != RoleType.OWNER) {
       request.setAttribute("errorMessage", "Permission Denied");
       request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
       return;
     }
 
+    if (queueDaoService.isBlocked(selectedQueueName) && !selectedAction.equals("blockOrUnblockQueue")) {
+      request.setAttribute("errorMessage", "The queue is blocked. No modifications allowed.");
+      request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+      return;
+    }
 
-    switch (selectedAction){
+    switch (selectedAction) {
       case "add":
         request.getRequestDispatcher("/addItemInQueue").forward(request, response);
         break;
@@ -78,8 +86,10 @@ public class UpdateQueueServlet extends HttpServlet {
         break;
       case "deleteQueue":
         request.getRequestDispatcher("/deleteQueue").forward(request, response);
+        break;
       default:
         break;
     }
   }
+
 }

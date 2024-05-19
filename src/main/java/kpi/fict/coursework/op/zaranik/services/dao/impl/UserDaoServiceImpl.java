@@ -28,7 +28,7 @@ public class UserDaoServiceImpl implements UserDaoService {
     if (existingUser != null) {
       throw new IllegalArgumentException("User already exists with username: " + user.getUsername());
     }
-    userDao.insert(user, true);
+    userDao.insert(user);
   }
 
 

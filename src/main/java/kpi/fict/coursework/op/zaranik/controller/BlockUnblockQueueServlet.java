@@ -33,7 +33,6 @@ public class BlockUnblockQueueServlet extends HttpServlet {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
-
     if (!nameValidatorService.isValidName(selectedQueueName)) {
       request.setAttribute("errorMessage", "Empty Form Submitted");
       request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
@@ -49,9 +48,9 @@ public class BlockUnblockQueueServlet extends HttpServlet {
         return;
       }
 
-      selectedQueue.setBlocked(!selectedQueue.isBlocked());
-      queueDaoService.updateQueue(selectedQueue);
-      request.getRequestDispatcher("/MainPage.jsp").forward(request, response);
+      boolean isBlocked = queueDaoService.isBlocked(selectedQueueName);
+      queueDaoService.setBlock(selectedQueueName, !isBlocked);
+      request.getRequestDispatcher("MainPage.jsp").forward(request, response);
     }
   }
 }

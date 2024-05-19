@@ -1,10 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error Page</title>
+    <title>queue Successfully Blocked</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -18,7 +17,7 @@
       }
 
       .container {
-        background-color: #fff;
+        background-color: #ff9999;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 20px;
@@ -35,12 +34,12 @@
         margin-bottom: 20px;
       }
 
-      .link a {
+      a {
         color: #007bff;
         text-decoration: none;
       }
 
-      .link a:hover {
+      a:hover {
         text-decoration: underline;
       }
     </style>

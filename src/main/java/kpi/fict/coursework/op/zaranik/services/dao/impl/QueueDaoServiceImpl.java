@@ -1,11 +1,9 @@
 package kpi.fict.coursework.op.zaranik.services.dao.impl;
 
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import kpi.fict.coursework.op.zaranik.dao.H2.H2QueueDao;
-import kpi.fict.coursework.op.zaranik.dao.QueueDao;
+import kpi.fict.coursework.op.zaranik.dao.Postgres.QueueDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.QueueDaoService;
@@ -30,7 +28,7 @@ public class QueueDaoServiceImpl implements QueueDaoService {
   public void addQueueToUser(User user, Queue queue) {
     if (user != null && queue != null) {
       queue.setCreator(user);
-      queueDao.insert(queue, true);
+      queueDao.insert(queue);
     }
   }
 
@@ -53,7 +51,7 @@ public class QueueDaoServiceImpl implements QueueDaoService {
         .filter(q -> q.getName().equals(queue.getName()))
         .findFirst().orElse(null);
     if (selectedQueue == null) return -1;
-    List<String> items = ((H2QueueDao) queueDao).getItemsByQueueId(selectedQueue.getId());
+    List<String> items = ((QueueDao) queueDao).getItemsByQueueId(selectedQueue.getId());
     if (!items.contains(user.getUsername())) return -1;
     return items.indexOf(user.getUsername()) + 1;
   }
@@ -76,17 +74,16 @@ public class QueueDaoServiceImpl implements QueueDaoService {
   @Override
   @SneakyThrows
   public void removeFirstItemFromQueue(Queue queue) {
-    List<String> items = ((H2QueueDao) queueDao).getItemsByQueueId(queue.getId());
+    List<String> items = ((QueueDao) queueDao).getItemsByQueueId(queue.getId());
     if (!items.isEmpty()) {
       String firstItem = items.get(0);
-      (queueDao).removeItemFromQueue(queue.getId(), firstItem);
+      queueDao.removeItemFromQueue(queue.getId(), firstItem);
     }
   }
 
-
   @Override
   public List<String> getItemsByQueueId(int queueId) {
-    return ((H2QueueDao) queueDao).getItemsByQueueId(queueId);
+    return ((QueueDao) queueDao).getItemsByQueueId(queueId);
   }
 
   @Override
@@ -104,15 +101,28 @@ public class QueueDaoServiceImpl implements QueueDaoService {
   @Override
   @SneakyThrows
   public int getQueueSize(Queue queue) {
-    return queueDao.getItemsByQueueId(queue.getId()).size();
+    return ((QueueDao) queueDao).getItemsByQueueId(queue.getId()).size();
   }
 
   @Override
   @SneakyThrows
   public boolean contains(Queue queue, String item) {
-    List<String> items = (List<String>) queueDao.getItemsByQueueId(queue.getId());
+    List<String> items = ((QueueDao) queueDao).getItemsByQueueId(queue.getId());
     return items.contains(item);
   }
 
-}
+  @Override
+  public boolean isBlocked(String queueName) {
+    Queue queue = findQueueByName(queueName);
+    return queue != null && queue.isBlocked();
+  }
 
+  @Override
+  public void setBlock(String queueName, boolean isBlocked) {
+    Queue queue = findQueueByName(queueName);
+    if (queue != null) {
+      queue.setBlock(isBlocked);
+      queueDao.update(queue);
+    }
+  }
+}
