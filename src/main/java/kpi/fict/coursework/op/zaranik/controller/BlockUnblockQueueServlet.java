@@ -48,6 +48,7 @@ public class BlockUnblockQueueServlet extends HttpServlet {
         request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
         return;
       }
+
       selectedQueue.setBlocked(!selectedQueue.isBlocked());
       queueDaoService.updateQueue(selectedQueue);
       request.getRequestDispatcher("/MainPage.jsp").forward(request, response);

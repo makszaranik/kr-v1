@@ -6,22 +6,27 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
 
 public class H2DataSource {
-  private static final String JDBC_URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
-  private static final String INIT_SQL = "RUNSCRIPT FROM 'classpath:database.sql'";
+  private static final String JDBC_URL = "jdbc:postgresql://localhost:5435/postgres";
+  private static final String USER = "postgres";
+  private static final String PASSWORD = "zaranik";
   private static boolean initialized = false;
   private static HikariDataSource dataSource;
 
   static {
     try {
-      Class.forName("org.h2.Driver");
-      System.out.println("H2 Driver loaded successfully.");
+      Class.forName("org.postgresql.Driver");
+      System.out.println("PostgreSQL Driver loaded successfully.");
 
       HikariConfig config = new HikariConfig();
       config.setJdbcUrl(JDBC_URL);
-      config.setDriverClassName("org.h2.Driver");
+      config.setUsername(USER);
+      config.setPassword(PASSWORD);
+      config.setDriverClassName("org.postgresql.Driver");
       config.setMaximumPoolSize(10);
       config.setMinimumIdle(2);
       config.setInitializationFailTimeout(-1);
@@ -29,7 +34,7 @@ public class H2DataSource {
       dataSource = new HikariDataSource(config);
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
-      throw new RuntimeException("Failed to load H2 driver.", e);
+      throw new RuntimeException("Failed to load PostgreSQL driver.", e);
     }
   }
 
@@ -49,9 +54,10 @@ public class H2DataSource {
   private static void initializeDatabase() {
     try (Connection connection = dataSource.getConnection();
         Statement stmt = connection.createStatement()) {
-      stmt.execute(INIT_SQL);
+      String initSql = new String(Files.readAllBytes(Paths.get("src/main/resources/database.sql")));
+      stmt.execute(initSql);
       System.out.println("Database initialized successfully.");
-    } catch (SQLException e) {
+    } catch (SQLException | IOException e) {
       e.printStackTrace();
       throw new RuntimeException("Failed to initialize database.", e);
     }

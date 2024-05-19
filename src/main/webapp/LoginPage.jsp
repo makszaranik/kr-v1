@@ -75,8 +75,8 @@
 <div class="container">
     <h2>Login</h2>
     <form action="login" method="post">
-        Username: <input type="text" name="username"><br>
-        Password: <input type="password" name="password"><br>
+        Username: <input type="text" name="username" value="Max"><br>
+        Password: <input type="password" name="password" value="max123"><br>
         <input type="submit" value="Login">
     </form>
     <p>Don't have an account? <a href="RegisterPage.jsp">Register</a></p>

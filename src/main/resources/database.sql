@@ -3,24 +3,24 @@ DROP TABLE IF EXISTS queues;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE IF NOT EXISTS users (
-                                     id INT AUTO_INCREMENT PRIMARY KEY,
+                                     id SERIAL PRIMARY KEY,
                                      username VARCHAR(255) NOT NULL,
                                      password VARCHAR(255) NOT NULL,
                                      roleType VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS queues (
-                                     id INT AUTO_INCREMENT PRIMARY KEY,
-                                     name VARCHAR(255) NOT NULL,
-                                     creatorId INT NOT NULL,
-                                     FOREIGN KEY (creatorId) REFERENCES users(id)
+                                      id SERIAL PRIMARY KEY,
+                                      name VARCHAR(255) NOT NULL,
+                                      creatorId INT NOT NULL,
+                                      FOREIGN KEY (creatorId) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS queueItems (
-                                     id INT AUTO_INCREMENT PRIMARY KEY,
-                                     queueId INT NOT NULL,
-                                     item VARCHAR(255) NOT NULL,
-                                     FOREIGN KEY (queueId) REFERENCES queues(id)
+                                       id SERIAL PRIMARY KEY,
+                                       queueId INT NOT NULL,
+                                       item VARCHAR(255) NOT NULL,
+                                       FOREIGN KEY (queueId) REFERENCES queues(id)
 );
 
 INSERT INTO users (username, password, roleType) VALUES ('Max', 'max123', 'USER');

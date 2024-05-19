@@ -44,6 +44,7 @@ public class UpdateQueueServlet extends HttpServlet {
     request.getRequestDispatcher("UpdateQueue.jsp").forward(request, response);
   }
 
+
   @Override
   @SneakyThrows
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -61,8 +62,9 @@ public class UpdateQueueServlet extends HttpServlet {
       return;
     }
 
+
     switch (selectedAction){
-      case "add" :
+      case "add":
         request.getRequestDispatcher("/addItemInQueue").forward(request, response);
         break;
       case "removeItem":
