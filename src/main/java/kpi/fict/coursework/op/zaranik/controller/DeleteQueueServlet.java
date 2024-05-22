@@ -37,7 +37,7 @@ public class DeleteQueueServlet extends HttpServlet {
         request.setAttribute("queues", queueDaoService.getAllQueues());
       }
     }
-    request.getRequestDispatcher("/EditSelectedQueue.jsp").forward(request, response);
+    request.getRequestDispatcher("/CreateQueue.jsp").forward(request, response);
   }
 
   @SneakyThrows
@@ -56,10 +56,9 @@ public class DeleteQueueServlet extends HttpServlet {
 
     if (user != null) {
       Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
-
       if (selectedQueue != null) {
         queueDaoService.delete(selectedQueue);
-        doGet(request, response);
+        request.getRequestDispatcher("MainPage.jsp").forward(request, response);
       }
     } else {
       response.sendRedirect("/LoginPage.jsp");

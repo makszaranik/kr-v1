@@ -47,7 +47,7 @@
     </style>
 </head>
 <body>
-<h1>My Queues</h1>
+<h1>${tableName}</h1>
 <c:if test="${empty queues}">
     <p>No queues available.</p>
 </c:if>

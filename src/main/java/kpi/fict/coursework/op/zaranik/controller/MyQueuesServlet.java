@@ -39,6 +39,7 @@ public class MyQueuesServlet extends HttpServlet {
 
     List<Queue> userQueues = (List<Queue>) queueDaoService.getUserQueues(user.getUsername());
     session.setAttribute("queues", userQueues);
+    request.setAttribute("tableName", "My Queues");
     if(userQueues.isEmpty()){
       request.setAttribute("errorMessage", "No queues available");
       request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);

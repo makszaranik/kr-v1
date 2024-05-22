@@ -28,10 +28,16 @@ public class AllQueuesServlet extends HttpServlet {
   @SneakyThrows
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    HttpSession session = request.getSession();
-
     Collection<Queue> allQueues = queueDaoService.getAllQueues();
-    session.setAttribute("queues", allQueues);
+    request.setAttribute("queues", allQueues);
+    request.setAttribute("tableName", "All Queues");
+
+    if(queueDaoService.getAllQueues().isEmpty()){
+      request.setAttribute("errorMessage", "No queues available");
+      request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+      return;
+    }
+
     request.getRequestDispatcher("QueueMenu.jsp").forward(request, response);
   }
 }
