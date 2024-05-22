@@ -71,6 +71,7 @@ public class CreateQueueServlet extends HttpServlet {
     Queue queue = new Queue(selectedQueueName, user);
     roleConfiguratorService.configureRole(user, queue, RoleType.OWNER);
     queueDaoService.addQueueToUser(user, queue);
+    queueDaoService.updateQueue(queue);
     response.sendRedirect("/MainPage.jsp");
   }
 
