@@ -12,6 +12,7 @@ import java.util.List;
 import kpi.fict.coursework.op.zaranik.dao.Postgres.UserDao;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.impl.UserDaoServiceImpl;
+import kpi.fict.coursework.op.zaranik.services.passwordhashing.PasswordHashingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +22,9 @@ import org.mockito.MockitoAnnotations;
 public class UserDaoServiceTest {
   @Mock
   private UserDao userDao;
+
+  @Mock
+  private PasswordHashingService passwordHashingService;
 
   @InjectMocks
   private UserDaoServiceImpl userDaoService;
@@ -50,8 +54,11 @@ public class UserDaoServiceTest {
   @Test
   void createUserTest() {
     User user = new User("NewUser", "newPassword");
+    when(passwordHashingService.hashPassword("newPassword")).thenReturn("hashedNewPassword");
+
     userDaoService.createUser(user);
 
+    verify(passwordHashingService, times(1)).hashPassword("newPassword");
     verify(userDao, times(1)).insert(user);
   }
 

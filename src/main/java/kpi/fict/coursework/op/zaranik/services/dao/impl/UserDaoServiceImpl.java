@@ -1,20 +1,20 @@
 package kpi.fict.coursework.op.zaranik.services.dao.impl;
 
-
 import kpi.fict.coursework.op.zaranik.dao.UserDao;
-import kpi.fict.coursework.op.zaranik.model.*;
+import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.UserDaoService;
-import lombok.SneakyThrows;
+import kpi.fict.coursework.op.zaranik.services.passwordhashing.PasswordHashingService;
 
 public class UserDaoServiceImpl implements UserDaoService {
 
   private final UserDao userDao;
+  private final PasswordHashingService passwordHashingService;
 
-  public UserDaoServiceImpl(UserDao userDao) {
+  public UserDaoServiceImpl(UserDao userDao, PasswordHashingService passwordHashingService) {
     this.userDao = userDao;
+    this.passwordHashingService = passwordHashingService;
   }
 
-  @SneakyThrows
   @Override
   public User findUserByUsername(String username) {
     return userDao.findAll().stream()
@@ -28,14 +28,17 @@ public class UserDaoServiceImpl implements UserDaoService {
     if (existingUser != null) {
       throw new IllegalArgumentException("User already exists with username: " + user.getUsername());
     }
+    String hashedPassword = passwordHashingService.hashPassword(user.getPassword());
+    user.setPassword(hashedPassword);
     userDao.insert(user);
   }
-
-
 
   @Override
   public boolean exists(String username) {
     return findUserByUsername(username) != null;
   }
 
+  public boolean validatePassword(String plainPassword, String hashedPassword) {
+    return passwordHashingService.checkPassword(plainPassword, hashedPassword);
+  }
 }

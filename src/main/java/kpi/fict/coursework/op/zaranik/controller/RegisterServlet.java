@@ -23,11 +23,10 @@ public class RegisterServlet extends HttpServlet {
     this.userDaoService = ServiceFactory.getUserDaoService();
   }
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     String confirmPassword = request.getParameter("confirm_password");
-
 
     if (!password.equals(confirmPassword)) {
       response.sendRedirect("PasswordMismatch.jsp");
@@ -38,7 +37,6 @@ public class RegisterServlet extends HttpServlet {
       request.getRequestDispatcher("/UserAlreadyExists.jsp").forward(request, response);
       return;
     }
-
 
     User newUser = new User(username, password, RoleType.USER);
     userDaoService.createUser(newUser);

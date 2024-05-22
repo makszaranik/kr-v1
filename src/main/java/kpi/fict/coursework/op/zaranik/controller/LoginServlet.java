@@ -18,7 +18,7 @@ public class LoginServlet extends HttpServlet {
 
   @Override
   @SneakyThrows
-  public void init(){
+  public void init() {
     super.init();
     this.userDaoService = ServiceFactory.getUserDaoService();
   }
@@ -30,18 +30,18 @@ public class LoginServlet extends HttpServlet {
 
   @SneakyThrows
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
     User user = userDaoService.findUserByUsername(username);
 
-    if(user == null){
+    if (user == null) {
       request.getRequestDispatcher("InvalidLoginOrPassword.jsp").forward(request, response);
       return;
     }
 
-    if (user.getPassword().equals(password)) {
+    if (userDaoService.validatePassword(password, user.getPassword())) {
       request.getSession().setAttribute("username", username);
       request.getSession().setAttribute("user", user);
       response.sendRedirect("MainPage.jsp");

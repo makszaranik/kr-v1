@@ -10,24 +10,24 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS queues (
-                                      id SERIAL PRIMARY KEY,
-                                      name VARCHAR(255) NOT NULL,
-                                      creatorId INT NOT NULL,
-                                      isBlocked BOOLEAN NOT NULL DEFAULT FALSE,
-                                      FOREIGN KEY (creatorId) REFERENCES users(id)
+                                     id SERIAL PRIMARY KEY,
+                                     name VARCHAR(255) NOT NULL,
+                                     creatorId INT NOT NULL,
+                                     isBlocked BOOLEAN NOT NULL DEFAULT FALSE,
+                                     FOREIGN KEY (creatorId) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS queueItems (
-                                       id SERIAL PRIMARY KEY,
-                                       queueId INT NOT NULL,
-                                       item VARCHAR(255) NOT NULL,
-                                       FOREIGN KEY (queueId) REFERENCES queues(id)
+                                     id SERIAL PRIMARY KEY,
+                                     queueId INT NOT NULL,
+                                     item VARCHAR(255) NOT NULL,
+                                     FOREIGN KEY (queueId) REFERENCES queues(id)
 );
 
 
-INSERT INTO users (username, password, roleType) VALUES ('Max', 'max123', 'USER');
-INSERT INTO users (username, password, roleType) VALUES ('Yana', 'yana123', 'USER');
-INSERT INTO users (username, password, roleType) VALUES ('admin', 'admin', 'USER');
+INSERT INTO users (username, password, roleType) VALUES ('Max', 'd1696816bc1a7afe92f1c8787ac222c3', 'USER');
+INSERT INTO users (username, password, roleType) VALUES ('Yana', 'f120b1fbce5e71f228b8764c574455da', 'USER');
+INSERT INTO users (username, password, roleType) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 'USER');
 
 INSERT INTO queues (name, creatorId, isBlocked) VALUES ('IT Support', 1, FALSE);
 INSERT INTO queues (name, creatorId, isBlocked) VALUES ('HR Services', 3, FALSE);

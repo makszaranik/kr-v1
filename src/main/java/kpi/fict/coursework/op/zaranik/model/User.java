@@ -2,9 +2,10 @@ package kpi.fict.coursework.op.zaranik.model;
 
 
 import java.util.Objects;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+@Data
 public class User {
   private String username;
   private String password;
