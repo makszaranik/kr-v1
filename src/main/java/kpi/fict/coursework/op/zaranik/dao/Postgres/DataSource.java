@@ -20,7 +20,7 @@ public class DataSource {
   static {
     try {
       Class.forName("org.postgresql.Driver");
-      System.out.println("PostgreSQL Driver loaded successfully.");
+      System.out.println("Postgresql Driver loaded successfully.");
 
       HikariConfig config = new HikariConfig();
       config.setJdbcUrl(JDBC_URL);
@@ -34,7 +34,7 @@ public class DataSource {
       dataSource = new HikariDataSource(config);
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
-      throw new RuntimeException("Failed to load PostgreSQL driver.", e);
+      throw new RuntimeException("Failed to load Postgresql driver.", e);
     }
   }
 

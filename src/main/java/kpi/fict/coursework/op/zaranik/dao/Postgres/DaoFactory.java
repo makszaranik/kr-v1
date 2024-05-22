@@ -1,10 +1,9 @@
 package kpi.fict.coursework.op.zaranik.dao.Postgres;
 
-
 public class DaoFactory implements kpi.fict.coursework.op.zaranik.dao.DaoFactory {
   Database database;
-  kpi.fict.coursework.op.zaranik.dao.UserDao userDao;
-  kpi.fict.coursework.op.zaranik.dao.QueueDao queueDao;
+  UserDao userDao;
+  QueueDao queueDao;
 
   public DaoFactory(Database database) {
     this.database = database;
@@ -13,12 +12,12 @@ public class DaoFactory implements kpi.fict.coursework.op.zaranik.dao.DaoFactory
   }
 
   @Override
-  public kpi.fict.coursework.op.zaranik.dao.UserDao getUserDao() {
+  public UserDao getUserDao() {
     return this.userDao;
   }
 
   @Override
-  public kpi.fict.coursework.op.zaranik.dao.QueueDao getQueueDao() {
+  public QueueDao getQueueDao() {
     return this.queueDao;
   }
 
