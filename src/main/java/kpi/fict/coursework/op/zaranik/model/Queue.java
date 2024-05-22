@@ -1,8 +1,10 @@
 package kpi.fict.coursework.op.zaranik.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class Queue {
   private String name;
   private User creator;

@@ -18,10 +18,10 @@ CREATE TABLE IF NOT EXISTS queues (
 );
 
 CREATE TABLE IF NOT EXISTS queueItems (
-                                          id SERIAL PRIMARY KEY,
-                                          queueId INT NOT NULL,
-                                          item VARCHAR(255) NOT NULL,
-                                          FOREIGN KEY (queueId) REFERENCES queues(id)
+                                       id SERIAL PRIMARY KEY,
+                                       queueId INT NOT NULL,
+                                       item VARCHAR(255) NOT NULL,
+                                       FOREIGN KEY (queueId) REFERENCES queues(id)
 );
 
 
