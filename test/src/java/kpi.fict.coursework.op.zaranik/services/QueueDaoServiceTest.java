@@ -1,11 +1,5 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Arrays;
-import java.util.List;
-
 import kpi.fict.coursework.op.zaranik.dao.Postgres.QueueDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
@@ -15,6 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 class QueueDaoServiceTest {
 
@@ -38,8 +38,8 @@ class QueueDaoServiceTest {
 
     Queue result = queueDaoService.findQueueByName("TestQueue");
 
-    assertNotNull(result);
-    assertEquals("TestQueue", result.getName());
+    assertThat(result).isNotNull();
+    assertThat(result.getName()).isEqualTo("TestQueue");
     verify(queueDao, times(1)).findAll();
   }
 
@@ -51,7 +51,7 @@ class QueueDaoServiceTest {
     queueDaoService.addQueueToUser(user, queue);
 
     verify(queueDao, times(1)).insert(queue);
-    assertEquals(user, queue.getCreator());
+    assertThat(queue.getCreator()).isEqualTo(user);
   }
 
   @Test
@@ -65,14 +65,14 @@ class QueueDaoServiceTest {
 
     List<Queue> result = (List<Queue>) queueDaoService.getUserQueues("User");
 
-    assertNotNull(result);
-    assertEquals(2, result.size());
-    assertEquals(user, result.get(0).getCreator());
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(2);
+    assertThat(result).allMatch(queue -> queue.getCreator().equals(user));
     verify(queueDao, times(1)).findAll();
   }
 
   @Test
-  void getUserPositionTest(){
+  void getUserPositionTest() {
     User user = new User("User", "password");
 
     Queue queue = new Queue("TestQueue", user);
@@ -83,13 +83,13 @@ class QueueDaoServiceTest {
 
     int position = queueDaoService.getUserPosition(queue, user);
 
-    assertEquals(2, position);
+    assertThat(position).isEqualTo(2);
     verify(queueDao, times(1)).findAll();
     verify(queueDao, times(1)).getItemsByQueueId(1);
   }
 
   @Test
-  void removeFirstItemFromQueueTest(){
+  void removeFirstItemFromQueueTest() {
     Queue queue = new Queue("TestQueue", new User("User", "password"));
     queue.setId(1);
 
@@ -109,12 +109,12 @@ class QueueDaoServiceTest {
 
     int size = queueDaoService.getQueueSize(queue);
 
-    assertEquals(2, size);
+    assertThat(size).isEqualTo(2);
     verify(queueDao, times(1)).getItemsByQueueId(1);
   }
 
   @Test
-  void containsTest(){
+  void containsTest() {
     Queue queue = new Queue("TestQueue", new User("User", "password"));
     queue.setId(1);
 
@@ -124,9 +124,9 @@ class QueueDaoServiceTest {
     boolean containsItem2 = queueDaoService.contains(queue, "item2");
     boolean containsItem3 = queueDaoService.contains(queue, "item3");
 
-    assertTrue(containsItem1);
-    assertTrue(containsItem2);
-    assertFalse(containsItem3);
+    assertThat(containsItem1).isTrue();
+    assertThat(containsItem2).isTrue();
+    assertThat(containsItem3).isFalse();
     verify(queueDao, times(3)).getItemsByQueueId(1);
   }
 
@@ -135,11 +135,14 @@ class QueueDaoServiceTest {
     User user = new User("User", "password");
     Queue queue = new Queue("TestQueue", user);
     queue.setId(1);
+
     when(queueDao.findAll()).thenReturn(List.of(queue));
     queueDaoService.setBlock(queue.getName(), true);
     when(queueDao.findAll()).thenReturn(List.of(queue));
+
     boolean isBlocked = queueDaoService.isBlocked("TestQueue");
-    assertTrue(isBlocked);
+
+    assertThat(isBlocked).isTrue();
     verify(queueDao, times(2)).findAll();
     verify(queueDao, times(1)).update(queue);
   }
@@ -153,6 +156,6 @@ class QueueDaoServiceTest {
     queueDaoService.setBlock("TestQueue", true);
 
     verify(queueDao, times(1)).update(queue);
-    assertTrue(queue.isBlocked());
+    assertThat(queue.isBlocked()).isTrue();
   }
 }

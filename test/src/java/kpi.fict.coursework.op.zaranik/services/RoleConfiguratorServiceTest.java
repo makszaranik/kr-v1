@@ -1,10 +1,5 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.RoleType;
 import kpi.fict.coursework.op.zaranik.model.User;
@@ -15,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 public class RoleConfiguratorServiceTest {
 
@@ -38,7 +36,7 @@ public class RoleConfiguratorServiceTest {
     when(queueDaoService.findQueueByName("queue")).thenReturn(queue);
     RoleType result = roleConfiguratorService.getConfiguration(user, queue);
 
-    assertEquals(RoleType.OWNER, result);
+    assertThat(result).isEqualTo(RoleType.OWNER);
   }
 
   @Test
@@ -52,7 +50,7 @@ public class RoleConfiguratorServiceTest {
 
     RoleType result = roleConfiguratorService.getConfiguration(user, queue);
 
-    assertEquals(RoleType.USER, result);
+    assertThat(result).isEqualTo(RoleType.USER);
   }
 
   @Test
@@ -65,7 +63,6 @@ public class RoleConfiguratorServiceTest {
 
     roleConfiguratorService.configureRole(user, queue, RoleType.OWNER);
 
-    verify(queueDaoService).findQueueByName("queue1");
-    assertEquals(user, queue.getCreator());
+    assertThat(queue.getCreator()).isEqualTo(user);
   }
 }

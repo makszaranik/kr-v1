@@ -1,14 +1,5 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
 import kpi.fict.coursework.op.zaranik.dao.Postgres.UserDao;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.impl.UserDaoServiceImpl;
@@ -19,7 +10,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 public class UserDaoServiceTest {
+
   @Mock
   private UserDao userDao;
 
@@ -43,11 +40,11 @@ public class UserDaoServiceTest {
     User resultUser1 = userDaoService.findUserByUsername("Max");
     User resultUser2 = userDaoService.findUserByUsername("User");
 
-    assertNotNull(resultUser1);
-    assertNotNull(resultUser2);
+    assertThat(resultUser1).isNotNull();
+    assertThat(resultUser2).isNotNull();
 
-    assertEquals("Max", resultUser1.getUsername());
-    assertEquals("User", resultUser2.getUsername());
+    assertThat(resultUser1.getUsername()).isEqualTo("Max");
+    assertThat(resultUser2.getUsername()).isEqualTo("User");
     verify(userDao, times(2)).findAll();
   }
 
@@ -65,15 +62,14 @@ public class UserDaoServiceTest {
   @Test
   void existsTest() {
     User user1 = new User("Max", "max123");
-    User user2 = new User("User", "password");
 
     when(userDao.findAll()).thenReturn(List.of(user1));
 
     boolean resultUser1 = userDaoService.exists(user1.getUsername());
-    boolean resultUser2 = userDaoService.exists(user2.getUsername());
+    boolean resultUser2 = userDaoService.exists("User");
 
-    assertTrue(resultUser1);
-    assertFalse(resultUser2);
+    assertThat(resultUser1).isTrue();
+    assertThat(resultUser2).isFalse();
     verify(userDao, times(2)).findAll();
   }
 }

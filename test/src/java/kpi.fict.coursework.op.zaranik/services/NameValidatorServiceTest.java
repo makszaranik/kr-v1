@@ -1,17 +1,12 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import kpi.fict.coursework.op.zaranik.dao.Postgres.QueueDao;
-import kpi.fict.coursework.op.zaranik.services.dao.impl.QueueDaoServiceImpl;
-import kpi.fict.coursework.op.zaranik.services.namevalidator.NameValidatorService;
 import kpi.fict.coursework.op.zaranik.services.namevalidator.impl.NameValidatorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NameValidatorServiceTest {
 
@@ -24,25 +19,24 @@ public class NameValidatorServiceTest {
   }
 
   @Test
-  void testValidName(){
-    assertTrue(nameValidatorService.isValidName("MyQueue"));
-    assertTrue(nameValidatorService.isValidName("queue"));
-    assertTrue(nameValidatorService.isValidName("queue 1"));
-
+  void testValidName() {
+    assertThat(nameValidatorService.isValidName("MyQueue")).isTrue();
+    assertThat(nameValidatorService.isValidName("queue")).isTrue();
+    assertThat(nameValidatorService.isValidName("queue 1")).isTrue();
   }
 
   @Test
   void testValidNullName() {
-    assertFalse(nameValidatorService.isValidName(null));
+    assertThat(nameValidatorService.isValidName(null)).isFalse();
   }
 
   @Test
   void testInvalidNameEmptyString() {
-    assertFalse(nameValidatorService.isValidName(""));
+    assertThat(nameValidatorService.isValidName("")).isFalse();
   }
 
   @Test
   void testInvalidNameWhitespaceString() {
-    assertFalse(nameValidatorService.isValidName("   "));
+    assertThat(nameValidatorService.isValidName("   ")).isFalse();
   }
 }
