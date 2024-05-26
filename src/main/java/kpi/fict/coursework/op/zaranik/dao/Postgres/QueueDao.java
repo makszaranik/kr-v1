@@ -32,7 +32,6 @@ public class QueueDao extends Dao<Queue> implements kpi.fict.coursework.op.zaran
   }
 
   @Override
-  @SneakyThrows
   public List<String> getItemsByQueueId(int queueId) {
     List<String> items = new ArrayList<>();
     String query = "SELECT item FROM queueItems WHERE queueId = ?";
@@ -44,12 +43,13 @@ public class QueueDao extends Dao<Queue> implements kpi.fict.coursework.op.zaran
           items.add(rs.getString("item"));
         }
       }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
     return items;
   }
 
   @Override
-  @SneakyThrows
   public void addItemByQueueId(int queueId, String item) {
     String query = "INSERT INTO queueItems (queueId, item) VALUES (?, ?)";
     try (Connection connection = DataSource.getConnection();
@@ -57,11 +57,12 @@ public class QueueDao extends Dao<Queue> implements kpi.fict.coursework.op.zaran
       ps.setInt(1, queueId);
       ps.setString(2, item);
       ps.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 
   @Override
-  @SneakyThrows
   public void removeItemFromQueue(int queueId, String item) {
     String query = "DELETE FROM queueItems WHERE id IN (" +
         "SELECT id FROM queueItems WHERE queueId = ? AND item = ? LIMIT 1)";
@@ -70,6 +71,8 @@ public class QueueDao extends Dao<Queue> implements kpi.fict.coursework.op.zaran
       ps.setInt(1, queueId);
       ps.setString(2, item);
       ps.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 

@@ -3,7 +3,6 @@ package kpi.fict.coursework.op.zaranik.dao.Postgres;
 
 import java.sql.*;
 import java.util.*;
-import lombok.SneakyThrows;
 
 public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T> {
 
@@ -23,7 +22,7 @@ public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T
 
   protected abstract void setGeneratedId(T entity, int id);
 
-  @SneakyThrows
+
   @Override
   public T get(Integer id) {
     String query = "SELECT * FROM " + getTableName() + " WHERE id = ?";
@@ -35,6 +34,8 @@ public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T
           return mapResultSetToEntity(rs);
         }
       }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
     return null;
   }
@@ -55,7 +56,7 @@ public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T
     return entities;
   }
 
-  @SneakyThrows
+
   @Override
   public void insert(T entity) {
     String insertSql = getInsertQuery();
@@ -68,6 +69,8 @@ public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T
           setGeneratedId(entity, generatedKeys.getInt(1));
         }
       }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 
