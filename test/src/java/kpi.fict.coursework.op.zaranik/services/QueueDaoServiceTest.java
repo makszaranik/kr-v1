@@ -1,6 +1,6 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
-import kpi.fict.coursework.op.zaranik.dao.Postgres.QueueDao;
+import kpi.fict.coursework.op.zaranik.dao.Postgre.QueueDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.impl.QueueDaoServiceImpl;

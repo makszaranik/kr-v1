@@ -5,7 +5,7 @@ import java.util.Collection;
 public interface Dao<T> {
     T get(Integer id);
     Collection<T> findAll();
-    void insert(T entitie);
-    void delete(T entitie);
-    void update(T entitie);
+    void insert(T entity);
+    void delete(T entity);
+    void update(T entity);
 }

@@ -1,4 +1,4 @@
-package kpi.fict.coursework.op.zaranik.dao.Postgres;
+package kpi.fict.coursework.op.zaranik.dao.Postgre;
 
 
 public class Database {

@@ -1,4 +1,4 @@
-package kpi.fict.coursework.op.zaranik.dao.Postgres;
+package kpi.fict.coursework.op.zaranik.dao.Postgre;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import java.util.List;
 import kpi.fict.coursework.op.zaranik.dao.UserDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
-import lombok.SneakyThrows;
 
 public class QueueDao extends Dao<Queue> implements kpi.fict.coursework.op.zaranik.dao.QueueDao {
 
