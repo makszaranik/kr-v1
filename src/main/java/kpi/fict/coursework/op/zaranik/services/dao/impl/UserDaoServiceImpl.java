@@ -37,8 +37,4 @@ public class UserDaoServiceImpl implements UserDaoService {
   public boolean exists(String username) {
     return findUserByUsername(username) != null;
   }
-
-  public boolean validatePassword(String plainPassword, String hashedPassword) {
-    return passwordHashingService.checkPassword(plainPassword, hashedPassword);
-  }
 }

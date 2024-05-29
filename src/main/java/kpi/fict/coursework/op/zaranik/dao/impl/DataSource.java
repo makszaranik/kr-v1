@@ -1,4 +1,4 @@
-package kpi.fict.coursework.op.zaranik.dao.Postgre;
+package kpi.fict.coursework.op.zaranik.dao.impl;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

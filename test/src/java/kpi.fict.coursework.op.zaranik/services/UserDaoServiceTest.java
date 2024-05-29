@@ -1,6 +1,6 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
-import kpi.fict.coursework.op.zaranik.dao.Postgre.UserDao;
+import kpi.fict.coursework.op.zaranik.dao.impl.UserDao;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.impl.UserDaoServiceImpl;
 import kpi.fict.coursework.op.zaranik.services.passwordhashing.PasswordHashingService;

@@ -4,7 +4,6 @@ package kpi.fict.coursework.op.zaranik.model;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 @AllArgsConstructor

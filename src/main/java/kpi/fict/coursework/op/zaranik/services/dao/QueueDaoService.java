@@ -12,7 +12,7 @@ public interface QueueDaoService {
   Collection<Queue> getAllQueues();
   int getUserPosition(Queue queue, User user);
   void updateQueue(Queue queue);
-  void delete(Queue queue);
+  void deleteQueue(Queue queue);
   boolean exists(Queue queue);
   void removeFirstItemFromQueue(Queue queue);
   List<String> getItemsByQueueId(int queueId);

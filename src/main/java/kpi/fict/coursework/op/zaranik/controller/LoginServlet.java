@@ -9,18 +9,21 @@ import java.io.IOException;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.UserDaoService;
 import kpi.fict.coursework.op.zaranik.services.factories.ServiceFactory;
+import kpi.fict.coursework.op.zaranik.services.passwordhashing.PasswordHashingService;
 import lombok.SneakyThrows;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
   private UserDaoService userDaoService;
+  private PasswordHashingService passwordHashingService;
 
   @Override
   @SneakyThrows
   public void init() {
     super.init();
     this.userDaoService = ServiceFactory.getUserDaoService();
+    this.passwordHashingService = ServiceFactory.getPasswordHashingService();
   }
 
   @Override
@@ -40,8 +43,7 @@ public class LoginServlet extends HttpServlet {
       request.getRequestDispatcher("InvalidLoginOrPassword.jsp").forward(request, response);
       return;
     }
-
-    if (userDaoService.validatePassword(password, user.getPassword())) {
+    if (passwordHashingService.checkPassword(password, user.getPassword())) {
       request.getSession().setAttribute("username", username);
       request.getSession().setAttribute("user", user);
       response.sendRedirect("MainPage.jsp");

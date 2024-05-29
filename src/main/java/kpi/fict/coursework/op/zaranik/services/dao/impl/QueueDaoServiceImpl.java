@@ -3,7 +3,7 @@ package kpi.fict.coursework.op.zaranik.services.dao.impl;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import kpi.fict.coursework.op.zaranik.dao.Postgre.QueueDao;
+import kpi.fict.coursework.op.zaranik.dao.impl.QueueDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.QueueDaoService;
@@ -62,7 +62,7 @@ public class QueueDaoServiceImpl implements QueueDaoService {
   }
 
   @Override
-  public void delete(Queue queue) {
+  public void deleteQueue(Queue queue) {
     queueDao.delete(queue);
   }
 

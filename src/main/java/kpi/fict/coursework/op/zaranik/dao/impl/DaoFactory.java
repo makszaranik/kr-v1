@@ -1,4 +1,4 @@
-package kpi.fict.coursework.op.zaranik.dao.Postgre;
+package kpi.fict.coursework.op.zaranik.dao.impl;
 
 public class DaoFactory implements kpi.fict.coursework.op.zaranik.dao.DaoFactory {
   Database database;

@@ -1,4 +1,4 @@
-package kpi.fict.coursework.op.zaranik.dao.Postgre;
+package kpi.fict.coursework.op.zaranik.dao.impl;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -7,5 +7,4 @@ public interface UserDaoService {
   User findUserByUsername(String username);
   void createUser(User user);
   boolean exists(String username);
-  boolean validatePassword(String plainPassword, String hashedPassword);
 }

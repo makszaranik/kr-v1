@@ -57,7 +57,7 @@ public class DeleteQueueServlet extends HttpServlet {
     if (user != null) {
       Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
       if (selectedQueue != null) {
-        queueDaoService.delete(selectedQueue);
+        queueDaoService.deleteQueue(selectedQueue);
         request.getRequestDispatcher("MainPage.jsp").forward(request, response);
       }
     } else {

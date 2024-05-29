@@ -2,7 +2,7 @@ package kpi.fict.coursework.op.zaranik.services.factories;
 
 import jakarta.servlet.ServletContext;
 import kpi.fict.coursework.op.zaranik.dao.DaoFactory;
-import kpi.fict.coursework.op.zaranik.dao.Postgre.QueueDao;
+import kpi.fict.coursework.op.zaranik.dao.impl.QueueDao;
 import kpi.fict.coursework.op.zaranik.services.dao.QueueDaoService;
 import kpi.fict.coursework.op.zaranik.services.dao.UserDaoService;
 import kpi.fict.coursework.op.zaranik.services.dao.impl.QueueDaoServiceImpl;
