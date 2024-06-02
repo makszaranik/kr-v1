@@ -14,33 +14,35 @@ import lombok.SneakyThrows;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
-  private UserDaoService userDaoService;
+  UserDaoService userDaoService;
 
   @Override
   @SneakyThrows
-  public void init() {
+  public void init(){
     super.init();
     this.userDaoService = ServiceFactory.getUserDaoService();
   }
 
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  @Override
+  @SneakyThrows
+  public void doPost(HttpServletRequest request, HttpServletResponse response){
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     String confirmPassword = request.getParameter("confirm_password");
 
-    if (!password.equals(confirmPassword)) {
-      response.sendRedirect("PasswordMismatch.jsp");
-      return;
+    if(userDaoService.exists(username)){
+      request.setAttribute("errorMessage", "user already exists");
+      request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+    }
+    if(!password.equals(confirmPassword)){
+      request.setAttribute("errorMessage", "Password mismatching");
+      request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
     }
 
-    if (userDaoService.exists(username)) {
-      request.getRequestDispatcher("/UserAlreadyExists.jsp").forward(request, response);
-      return;
-    }
-
-    User newUser = new User(username, password, RoleType.USER);
-    userDaoService.createUser(newUser);
+    User user = new User(username, password);
+    userDaoService.createUser(user);
 
     response.sendRedirect("LoginPage.jsp");
   }
+
 }

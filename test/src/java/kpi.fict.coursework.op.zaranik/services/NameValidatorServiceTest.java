@@ -1,42 +1,49 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
+import java.util.stream.Stream;
 import kpi.fict.coursework.op.zaranik.services.namevalidator.impl.NameValidatorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(MockitoExtension.class)
 public class NameValidatorServiceTest {
 
   @InjectMocks
   private NameValidatorServiceImpl nameValidatorService;
 
-  @BeforeEach
-  void init() {
-    MockitoAnnotations.openMocks(this);
+  @ParameterizedTest
+  @MethodSource("nameMethodSource")
+  void testValidName(String name) {
+    assertThat(nameValidatorService.isValidName(name)).isTrue();
   }
 
-  @Test
-  void testValidName() {
-    assertThat(nameValidatorService.isValidName("MyQueue")).isTrue();
-    assertThat(nameValidatorService.isValidName("queue")).isTrue();
-    assertThat(nameValidatorService.isValidName("queue 1")).isTrue();
+  public static Stream<String> nameMethodSource() {
+    return Stream.of(
+        "MyQueue",
+        "queue",
+        "queue 1"
+    );
   }
 
-  @Test
-  void testValidNullName() {
-    assertThat(nameValidatorService.isValidName(null)).isFalse();
-  }
-
-  @Test
-  void testInvalidNameEmptyString() {
-    assertThat(nameValidatorService.isValidName("")).isFalse();
+  @ParameterizedTest
+  @NullAndEmptySource
+  void testInvalidName(String name) {
+    assertThat(nameValidatorService.isValidName(name)).isFalse();
   }
 
   @Test
   void testInvalidNameWhitespaceString() {
     assertThat(nameValidatorService.isValidName("   ")).isFalse();
   }
+
 }

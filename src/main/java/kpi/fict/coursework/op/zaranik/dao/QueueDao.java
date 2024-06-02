@@ -1,6 +1,5 @@
 package kpi.fict.coursework.op.zaranik.dao;
 
-
 import java.util.Collection;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 

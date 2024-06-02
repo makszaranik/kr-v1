@@ -4,15 +4,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import kpi.fict.coursework.op.zaranik.dao.QueueDao;
 import kpi.fict.coursework.op.zaranik.dao.UserDao;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 
-public class QueueDao extends Dao<Queue> implements kpi.fict.coursework.op.zaranik.dao.QueueDao {
+public class QueueDaoImpl extends Dao<Queue> implements QueueDao {
 
   private UserDao userDao;
 
-  public QueueDao(UserDao userDao) {
+  public QueueDaoImpl(UserDao userDao) {
     super();
     this.userDao = userDao;
   }
@@ -26,7 +27,7 @@ public class QueueDao extends Dao<Queue> implements kpi.fict.coursework.op.zaran
     User creator = userDao.get(creatorId);
     Queue queue = new Queue(name, creator);
     queue.setId(id);
-    queue.setBlock(isBlocked);
+    queue.setIsBlocked(isBlocked);
     return queue;
   }
 

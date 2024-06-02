@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.QueueDaoService;
@@ -27,8 +26,8 @@ public class DeleteQueueServlet extends HttpServlet {
     this.nameValidatorService = ServiceFactory.getNameValidatorService();
   }
 
-  @Override
   @SneakyThrows
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
     HttpSession session = request.getSession(false);
     if (session != null) {

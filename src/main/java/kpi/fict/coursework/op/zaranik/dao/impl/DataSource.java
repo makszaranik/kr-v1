@@ -20,7 +20,6 @@ public class DataSource {
   static {
     try {
       Class.forName("org.postgresql.Driver");
-      System.out.println("Postgresql Driver loaded successfully.");
 
       HikariConfig config = new HikariConfig();
       config.setJdbcUrl(JDBC_URL);

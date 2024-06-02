@@ -1,24 +1,26 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
-import kpi.fict.coursework.op.zaranik.dao.impl.UserDao;
+import java.util.Optional;
+import kpi.fict.coursework.op.zaranik.dao.impl.UserDaoImpl;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.impl.UserDaoServiceImpl;
 import kpi.fict.coursework.op.zaranik.services.passwordhashing.PasswordHashingService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-public class UserDaoServiceTest {
+@ExtendWith(MockitoExtension.class)
+public class UserDaoImplServiceTest {
 
   @Mock
-  private UserDao userDao;
+  private UserDaoImpl userDaoImpl;
 
   @Mock
   private PasswordHashingService passwordHashingService;
@@ -26,26 +28,24 @@ public class UserDaoServiceTest {
   @InjectMocks
   private UserDaoServiceImpl userDaoService;
 
-  @BeforeEach
-  void init() {
-    MockitoAnnotations.openMocks(this);
-  }
-
   @Test
   void findUserByUsernameTest() {
     User user1 = new User("Max", "max123");
     User user2 = new User("User", "password");
-    when(userDao.findAll()).thenReturn(List.of(user1, user2));
+    when(userDaoImpl.findAll()).thenReturn(List.of(user1, user2));
 
-    User resultUser1 = userDaoService.findUserByUsername("Max");
-    User resultUser2 = userDaoService.findUserByUsername("User");
+    Optional<User> optResultUser1 = userDaoService.findUserByUsername("Max");
+    Optional<User> optResultUser2 = userDaoService.findUserByUsername("User");
 
-    assertThat(resultUser1).isNotNull();
-    assertThat(resultUser2).isNotNull();
+    assertThat(optResultUser1).isPresent();
+    assertThat(optResultUser2).isPresent();
+
+    User resultUser1 = optResultUser1.get();
+    User resultUser2 = optResultUser2.get();
 
     assertThat(resultUser1.getUsername()).isEqualTo("Max");
     assertThat(resultUser2.getUsername()).isEqualTo("User");
-    verify(userDao, times(2)).findAll();
+    verify(userDaoImpl, times(2)).findAll();
   }
 
   @Test
@@ -56,20 +56,20 @@ public class UserDaoServiceTest {
     userDaoService.createUser(user);
 
     verify(passwordHashingService, times(1)).hashPassword("newPassword");
-    verify(userDao, times(1)).insert(user);
+    verify(userDaoImpl, times(1)).insert(user);
   }
 
   @Test
   void existsTest() {
     User user1 = new User("Max", "max123");
 
-    when(userDao.findAll()).thenReturn(List.of(user1));
+    when(userDaoImpl.findAll()).thenReturn(List.of(user1));
 
     boolean resultUser1 = userDaoService.exists(user1.getUsername());
     boolean resultUser2 = userDaoService.exists("User");
 
     assertThat(resultUser1).isTrue();
     assertThat(resultUser2).isFalse();
-    verify(userDao, times(2)).findAll();
+    verify(userDaoImpl, times(2)).findAll();
   }
 }

@@ -3,12 +3,13 @@ package kpi.fict.coursework.op.zaranik.dao.impl;
 
 import java.sql.*;
 import java.util.Collection;
+import kpi.fict.coursework.op.zaranik.dao.UserDao;
 import kpi.fict.coursework.op.zaranik.model.RoleType;
 import kpi.fict.coursework.op.zaranik.model.User;
 
-public class UserDao extends Dao<User> implements kpi.fict.coursework.op.zaranik.dao.UserDao {
+public class UserDaoImpl extends Dao<User> implements UserDao {
 
-  public UserDao() {
+  public UserDaoImpl() {
     super();
   }
 

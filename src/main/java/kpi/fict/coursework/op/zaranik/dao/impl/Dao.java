@@ -3,6 +3,7 @@ package kpi.fict.coursework.op.zaranik.dao.impl;
 
 import java.sql.*;
 import java.util.*;
+import lombok.SneakyThrows;
 
 public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T> {
 
@@ -24,44 +25,43 @@ public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T
 
 
   @Override
+  @SneakyThrows
   public T get(Integer id) {
-    String query = "SELECT * FROM " + getTableName() + " WHERE id = ?";
+    String sqlQuery = "SELECT * FROM " + getTableName() + " WHERE id = ?";
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement(query)) {
+        PreparedStatement ps = connection.prepareStatement(sqlQuery)) {
       ps.setInt(1, id);
       try (ResultSet rs = ps.executeQuery()) {
         if (rs.next()) {
           return mapResultSetToEntity(rs);
         }
       }
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
     }
     return null;
   }
 
   @Override
+  @SneakyThrows
   public Collection<T> findAll() {
     List<T> entities = new ArrayList<>();
-    String query = "SELECT * FROM " + getTableName();
+    String sqlQuery = "SELECT * FROM " + getTableName();
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement(query);
+        PreparedStatement ps = connection.prepareStatement(sqlQuery);
         ResultSet rs = ps.executeQuery()) {
       while (rs.next()) {
         entities.add(mapResultSetToEntity(rs));
       }
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
     }
     return entities;
   }
 
 
   @Override
+  @SneakyThrows
   public void insert(T entity) {
-    String insertSql = getInsertQuery();
+    String sqlQuery = getInsertQuery();
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+        PreparedStatement ps = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)) {
       setInsertParameters(ps, entity);
       ps.executeUpdate();
       try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
@@ -69,32 +69,28 @@ public abstract class Dao<T> implements kpi.fict.coursework.op.zaranik.dao.Dao<T
           setGeneratedId(entity, generatedKeys.getInt(1));
         }
       }
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
     }
   }
 
   @Override
+  @SneakyThrows
   public void delete(T entity) {
-    String query = "DELETE FROM " + getTableName() + " WHERE id = ?";
+    String sqlQuery = "DELETE FROM " + getTableName() + " WHERE id = ?";
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement(query)) {
+        PreparedStatement ps = connection.prepareStatement(sqlQuery)) {
       ps.setInt(1, getId(entity));
       ps.executeUpdate();
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
     }
   }
 
   @Override
+  @SneakyThrows
   public void update(T entity) {
-    String query = getUpdateQuery();
+    String sqlQuery = getUpdateQuery();
     try (Connection connection = DataSource.getConnection();
-        PreparedStatement ps = connection.prepareStatement(query)) {
+        PreparedStatement ps = connection.prepareStatement(sqlQuery)) {
       setUpdateParameters(ps, entity);
       ps.executeUpdate();
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
     }
   }
 }

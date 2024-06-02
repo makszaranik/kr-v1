@@ -1,5 +1,8 @@
 package kpi.fict.coursework.op.zaranik.dao.impl;
 
+import kpi.fict.coursework.op.zaranik.dao.QueueDao;
+import kpi.fict.coursework.op.zaranik.dao.UserDao;
+
 public class DaoFactory implements kpi.fict.coursework.op.zaranik.dao.DaoFactory {
   Database database;
   UserDao userDao;
@@ -7,8 +10,8 @@ public class DaoFactory implements kpi.fict.coursework.op.zaranik.dao.DaoFactory
 
   public DaoFactory(Database database) {
     this.database = database;
-    this.userDao = new UserDao();
-    this.queueDao = new QueueDao(userDao);
+    this.userDao = new UserDaoImpl();
+    this.queueDao = new QueueDaoImpl(userDao);
   }
 
   @Override

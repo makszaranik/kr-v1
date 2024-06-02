@@ -1,6 +1,6 @@
 package src.java.kpi.fict.coursework.op.zaranik.services;
 
-import kpi.fict.coursework.op.zaranik.dao.impl.QueueDao;
+import kpi.fict.coursework.op.zaranik.dao.impl.QueueDaoImpl;
 import kpi.fict.coursework.op.zaranik.model.Queue;
 import kpi.fict.coursework.op.zaranik.model.User;
 import kpi.fict.coursework.op.zaranik.services.dao.impl.QueueDaoServiceImpl;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class QueueDaoServiceTest {
 
   @Mock
-  private QueueDao queueDao;
+  private QueueDaoImpl queueDaoImpl;
 
   @InjectMocks
   private QueueDaoServiceImpl queueDaoService;
@@ -34,13 +34,13 @@ class QueueDaoServiceTest {
     Queue queue1 = new Queue("TestQueue", new User("Max", "max123"));
     Queue queue2 = new Queue("MyQueue", new User("Lisa", "lisa123"));
 
-    when(queueDao.findAll()).thenReturn(List.of(queue1, queue2));
+    when(queueDaoImpl.findAll()).thenReturn(List.of(queue1, queue2));
 
     Queue result = queueDaoService.findQueueByName("TestQueue");
 
     assertThat(result).isNotNull();
     assertThat(result.getName()).isEqualTo("TestQueue");
-    verify(queueDao, times(1)).findAll();
+    verify(queueDaoImpl, times(1)).findAll();
   }
 
   @Test
@@ -50,7 +50,7 @@ class QueueDaoServiceTest {
 
     queueDaoService.addQueueToUser(user, queue);
 
-    verify(queueDao, times(1)).insert(queue);
+    verify(queueDaoImpl, times(1)).insert(queue);
     assertThat(queue.getCreator()).isEqualTo(user);
   }
 
@@ -61,14 +61,14 @@ class QueueDaoServiceTest {
     Queue queue2 = new Queue("MyQueue", user);
     Queue queue3 = new Queue("TestQueue", new User("Max", "max123"));
 
-    when(queueDao.findAll()).thenReturn(List.of(queue1, queue2, queue3));
+    when(queueDaoImpl.findAll()).thenReturn(List.of(queue1, queue2, queue3));
 
     List<Queue> result = (List<Queue>) queueDaoService.getUserQueues("User");
 
     assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     assertThat(result).allMatch(queue -> queue.getCreator().equals(user));
-    verify(queueDao, times(1)).findAll();
+    verify(queueDaoImpl, times(1)).findAll();
   }
 
   @Test
@@ -78,14 +78,14 @@ class QueueDaoServiceTest {
     Queue queue = new Queue("TestQueue", user);
     queue.setId(1);
 
-    when(queueDao.findAll()).thenReturn(List.of(queue));
-    when(queueDao.getItemsByQueueId(1)).thenReturn(Arrays.asList("User1", "User", "User3"));
+    when(queueDaoImpl.findAll()).thenReturn(List.of(queue));
+    when(queueDaoImpl.getItemsByQueueId(1)).thenReturn(Arrays.asList("User1", "User", "User3"));
 
     int position = queueDaoService.getUserPosition(queue, user);
 
     assertThat(position).isEqualTo(2);
-    verify(queueDao, times(1)).findAll();
-    verify(queueDao, times(1)).getItemsByQueueId(1);
+    verify(queueDaoImpl, times(1)).findAll();
+    verify(queueDaoImpl, times(1)).getItemsByQueueId(1);
   }
 
   @Test
@@ -93,11 +93,11 @@ class QueueDaoServiceTest {
     Queue queue = new Queue("TestQueue", new User("User", "password"));
     queue.setId(1);
 
-    when(queueDao.getItemsByQueueId(1)).thenReturn(Arrays.asList("User1", "User2"));
+    when(queueDaoImpl.getItemsByQueueId(1)).thenReturn(Arrays.asList("User1", "User2"));
 
     queueDaoService.removeFirstItemFromQueue(queue);
 
-    verify(queueDao, times(1)).removeItemFromQueue(1, "User1");
+    verify(queueDaoImpl, times(1)).removeItemFromQueue(1, "User1");
   }
 
   @Test
@@ -105,12 +105,12 @@ class QueueDaoServiceTest {
     Queue queue = new Queue("TestQueue", new User("User", "password"));
     queue.setId(1);
 
-    when(queueDao.getItemsByQueueId(1)).thenReturn(Arrays.asList("User1", "User2"));
+    when(queueDaoImpl.getItemsByQueueId(1)).thenReturn(Arrays.asList("User1", "User2"));
 
     int size = queueDaoService.getQueueSize(queue);
 
     assertThat(size).isEqualTo(2);
-    verify(queueDao, times(1)).getItemsByQueueId(1);
+    verify(queueDaoImpl, times(1)).getItemsByQueueId(1);
   }
 
   @Test
@@ -118,7 +118,7 @@ class QueueDaoServiceTest {
     Queue queue = new Queue("TestQueue", new User("User", "password"));
     queue.setId(1);
 
-    when(queueDao.getItemsByQueueId(1)).thenReturn(Arrays.asList("item1", "item2"));
+    when(queueDaoImpl.getItemsByQueueId(1)).thenReturn(Arrays.asList("item1", "item2"));
 
     boolean containsItem1 = queueDaoService.contains(queue, "item1");
     boolean containsItem2 = queueDaoService.contains(queue, "item2");
@@ -127,7 +127,7 @@ class QueueDaoServiceTest {
     assertThat(containsItem1).isTrue();
     assertThat(containsItem2).isTrue();
     assertThat(containsItem3).isFalse();
-    verify(queueDao, times(3)).getItemsByQueueId(1);
+    verify(queueDaoImpl, times(3)).getItemsByQueueId(1);
   }
 
   @Test
@@ -136,26 +136,26 @@ class QueueDaoServiceTest {
     Queue queue = new Queue("TestQueue", user);
     queue.setId(1);
 
-    when(queueDao.findAll()).thenReturn(List.of(queue));
+    when(queueDaoImpl.findAll()).thenReturn(List.of(queue));
     queueDaoService.setBlock(queue.getName(), true);
-    when(queueDao.findAll()).thenReturn(List.of(queue));
+    when(queueDaoImpl.findAll()).thenReturn(List.of(queue));
 
     boolean isBlocked = queueDaoService.isBlocked("TestQueue");
 
     assertThat(isBlocked).isTrue();
-    verify(queueDao, times(2)).findAll();
-    verify(queueDao, times(1)).update(queue);
+    verify(queueDaoImpl, times(2)).findAll();
+    verify(queueDaoImpl, times(1)).update(queue);
   }
 
   @Test
   void setBlockTest() {
     Queue queue = new Queue("TestQueue", new User("TestUser", "password"));
 
-    when(queueDao.findAll()).thenReturn(List.of(queue));
+    when(queueDaoImpl.findAll()).thenReturn(List.of(queue));
 
     queueDaoService.setBlock("TestQueue", true);
 
-    verify(queueDao, times(1)).update(queue);
+    verify(queueDaoImpl, times(1)).update(queue);
     assertThat(queue.isBlocked()).isTrue();
   }
 }

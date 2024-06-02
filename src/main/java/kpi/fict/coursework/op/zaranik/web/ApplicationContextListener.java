@@ -9,6 +9,7 @@ import kpi.fict.coursework.op.zaranik.services.factories.ServiceFactory;
 
 @WebListener
 public class ApplicationContextListener implements ServletContextListener {
+
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     Database database = new Database();

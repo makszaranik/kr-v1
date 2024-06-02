@@ -53,8 +53,8 @@
 <h2>Main Page</h2>
 <ul>
     <li><a href="createQueue">Create queue</a></li>
-    <li><a href="viewQueues">View Queues</a></li>
-    <li><a href="updateQueue">Update Queues</a></li>
+    <li><a href="viewQueues">View queues</a></li>
+    <li><a href="updateQueue">Update queues</a></li>
     <li><a href="addMeInQueue">Add me in queue</a></li>
 </ul>
 </body>

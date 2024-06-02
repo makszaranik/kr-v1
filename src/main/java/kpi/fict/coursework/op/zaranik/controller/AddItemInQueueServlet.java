@@ -1,5 +1,4 @@
 package kpi.fict.coursework.op.zaranik.controller;
-
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,12 +12,11 @@ import kpi.fict.coursework.op.zaranik.services.factories.ServiceFactory;
 import kpi.fict.coursework.op.zaranik.services.namevalidator.NameValidatorService;
 import lombok.SneakyThrows;
 
+
 @WebServlet("/addItemInQueue")
 public class AddItemInQueueServlet extends HttpServlet {
-
   private QueueDaoService queueDaoService;
   private NameValidatorService nameValidatorService;
-
   @Override
   @SneakyThrows
   public void init() {
@@ -26,7 +24,6 @@ public class AddItemInQueueServlet extends HttpServlet {
     this.queueDaoService = ServiceFactory.getQueueDaoService();
     this.nameValidatorService = ServiceFactory.getNameValidatorService();
   }
-
 
   @Override
   @SneakyThrows
@@ -42,13 +39,11 @@ public class AddItemInQueueServlet extends HttpServlet {
     request.getRequestDispatcher("/UpdateQueue.jsp").forward(request, response);
   }
 
-
   @Override
   @SneakyThrows
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     String selectedQueueName = request.getParameter("selectedQueue");
     String newItem = request.getParameter("newItem");
-
     if(!nameValidatorService.isValidName(selectedQueueName)
         || !nameValidatorService.isValidName(newItem)){
       request.setAttribute("errorMessage", "Empty Form Submitted");
@@ -57,13 +52,13 @@ public class AddItemInQueueServlet extends HttpServlet {
     }
 
     Queue selectedQueue = queueDaoService.findQueueByName(selectedQueueName);
-
     if(selectedQueue != null){
       if(selectedQueue.isBlocked()){
         request.setAttribute("errorMessage", "Queue Is blocked");
         request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
         return;
       }
+
       if(queueDaoService.contains(selectedQueue, newItem)){
         request.setAttribute("errorMessage", "Item is already exists");
         request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
@@ -74,5 +69,4 @@ public class AddItemInQueueServlet extends HttpServlet {
       request.getRequestDispatcher("/MainPage.jsp").forward(request, response);
     }
   }
-
 }

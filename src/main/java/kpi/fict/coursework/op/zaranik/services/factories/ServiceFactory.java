@@ -2,7 +2,7 @@ package kpi.fict.coursework.op.zaranik.services.factories;
 
 import jakarta.servlet.ServletContext;
 import kpi.fict.coursework.op.zaranik.dao.DaoFactory;
-import kpi.fict.coursework.op.zaranik.dao.impl.QueueDao;
+import kpi.fict.coursework.op.zaranik.dao.impl.QueueDaoImpl;
 import kpi.fict.coursework.op.zaranik.services.dao.QueueDaoService;
 import kpi.fict.coursework.op.zaranik.services.dao.UserDaoService;
 import kpi.fict.coursework.op.zaranik.services.dao.impl.QueueDaoServiceImpl;
@@ -31,7 +31,7 @@ public class ServiceFactory {
     DaoFactory daoFactory = (DaoFactory) context.getAttribute("daoFactory");
     passwordHashingService = new PasswordHashingServiceImpl();
     userDaoService = new UserDaoServiceImpl(daoFactory.getUserDao(), passwordHashingService);
-    queueDaoService = new QueueDaoServiceImpl((QueueDao) daoFactory.getQueueDao());
+    queueDaoService = new QueueDaoServiceImpl((QueueDaoImpl) daoFactory.getQueueDao());
     roleConfiguratorService = new RoleConfiguratorServiceImpl();
     nameValidatorService = new NameValidatorServiceImpl();
   }
