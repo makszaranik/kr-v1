@@ -31,12 +31,12 @@ public class RegisterServlet extends HttpServlet {
     String confirmPassword = request.getParameter("confirm_password");
 
     if(userDaoService.exists(username)){
-      request.setAttribute("errorMessage", "user already exists");
-      request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+      request.getRequestDispatcher("/UserAlreadyExists.jsp").forward(request, response);
+      return;
     }
     if(!password.equals(confirmPassword)){
-      request.setAttribute("errorMessage", "Password mismatching");
-      request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+      request.getRequestDispatcher("/PasswordMismatch.jsp").forward(request, response);
+      return;
     }
 
     User user = new User(username, password);

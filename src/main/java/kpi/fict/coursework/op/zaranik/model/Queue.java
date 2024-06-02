@@ -37,14 +37,4 @@ public class Queue {
     this.creator = creator;
   }
 
-  @Override
-  public String toString() {
-    final StringBuffer sb = new StringBuffer("Queue{");
-    sb.append("name='").append(name).append('\'');
-    sb.append(", creator=").append(creator);
-    sb.append(", isBlocked=").append(isBlocked);
-    sb.append(", id=").append(id);
-    sb.append('}');
-    return sb.toString();
-  }
 }
